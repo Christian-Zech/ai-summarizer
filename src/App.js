@@ -4,15 +4,16 @@ import React, {useEffect, useState } from 'react';
 
 function App() {
   const [link, setLink] = useState('');
+  const [backendData, setBackendData] = useState('');
 
   const handleSubmit = () => {
     console.log('Final link:', link);
   };
 
   useEffect(() => {
-    fetch("/api/items")
+    fetch("/api")
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => setBackendData(data))
 
   }, [])
 
