@@ -1,13 +1,25 @@
 import './App.css';
-import React, {useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 
 function App() {
   const [link, setLink] = useState('');
   const [backendData, setBackendData] = useState('');
 
+  const SECOND_MS = 1000;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("/api")
+        .then(res => res.json())
+        .then(data => setBackendData(data));
+    }, SECOND_MS);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+
   const handleSubmit = () => {
-    console.log('Final link:', link);
     const options = {
       method: 'POST',
       headers: {
@@ -16,8 +28,6 @@ function App() {
       body: JSON.stringify({link})
     }    
     fetch("/api", options)
-      .then(res => res.json())
-      .then(data => setBackendData(data))
   };
 
   return (
@@ -28,7 +38,7 @@ function App() {
       </div>
       <h1>Summary:</h1>
       <div className="output">
-        <p>{backendData.message}</p>
+        <p>{backendData.summary}</p>
       </div>
     </div>
   );
