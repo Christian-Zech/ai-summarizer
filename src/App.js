@@ -6,14 +6,14 @@ function App() {
   const [link, setLink] = useState('');
   const [backendData, setBackendData] = useState('');
 
-  const SECOND_MS = 1000;
+  const MILLISECOND = 100;
 
   useEffect(() => {
     const interval = setInterval(() => {
       fetch("/api")
         .then(res => res.json())
         .then(data => setBackendData(data));
-    }, SECOND_MS);
+    }, MILLISECOND);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [])
